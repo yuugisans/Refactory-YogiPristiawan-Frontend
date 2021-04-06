@@ -23,25 +23,29 @@ const get = async (url) => {
 };
 
 (async () => {
-	const users = await get("https://jsonplaceholder.typicode.com/users");
-	const posts = await get("https://jsonplaceholder.typicode.com/posts");
+	try {
+		const users = await get("https://jsonplaceholder.typicode.com/users");
+		const posts = await get("https://jsonplaceholder.typicode.com/posts");
 
-	let user_data = {};
+		let user_data = {};
 
-	let results = [];
+		let results = [];
 
-	users.forEach((user) => {
-		user_data[user.id] = user;
-	});
-
-	posts.forEach((post) => {
-		Object.keys(user_data).forEach((key) => {
-			if (post.userId == key) {
-				post.user = user_data[key];
-				results.push(post);
-			}
+		users.forEach((user) => {
+			user_data[user.id] = user;
 		});
-	});
+
+		posts.forEach((post) => {
+			Object.keys(user_data).forEach((key) => {
+				if (post.userId == key) {
+					post.user = user_data[key];
+					results.push(post);
+				}
+			});
+		});
+	} catch (error) {
+		return console.log(error);
+	}
 
 	console.log(results);
 })();
